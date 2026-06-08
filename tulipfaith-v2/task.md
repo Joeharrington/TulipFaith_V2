@@ -1,0 +1,5 @@
+- `[x]` Install Dependencies (`gsap`, `lucide-react`)
+- `[x]` Create `src/lib/gsap/index.js`
+- `[x]` Create `src/components/cinematic/IntroOverlay.js`
+- `[x]` Update `src/app/page.js`
+- `[x]` Verification
