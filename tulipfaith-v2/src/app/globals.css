@@ -115,3 +115,162 @@ p {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+/* ── Open Book Reader ────────────────────────────────────────── */
+.open-book-shell {
+  position: relative;
+  border-radius: 5px 9px 9px 5px;
+  background:
+    linear-gradient(90deg, rgba(90, 52, 35, 0.20), rgba(255, 255, 255, 0) 2.5%, rgba(255, 255, 255, 0) 97.5%, rgba(90, 52, 35, 0.16)),
+    #eee1cf;
+  box-shadow:
+    0 28px 70px rgba(46, 16, 69, 0.26),
+    0 9px 18px rgba(46, 16, 69, 0.14),
+    inset 0 0 0 1px rgba(92, 58, 36, 0.16);
+  padding: 0;
+  perspective: 1800px;
+}
+
+.open-book-shell::before {
+  content: "";
+  position: absolute;
+  top: 1.5%;
+  bottom: 1.5%;
+  left: 50%;
+  width: 26px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 35;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg,
+      rgba(54, 32, 22, 0.24),
+      rgba(54, 32, 22, 0.10) 30%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(54, 32, 22, 0.12) 70%,
+      rgba(54, 32, 22, 0.26));
+  filter: blur(0.2px);
+  mix-blend-mode: multiply;
+}
+
+.open-book-shell::after {
+  content: "";
+  position: absolute;
+  inset: 8px -9px -10px 9px;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 6px 13px 13px 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(111, 78, 53, 0.18) 0,
+    rgba(111, 78, 53, 0.18) 1px,
+    rgba(255, 255, 255, 0.34) 2px,
+    rgba(255, 255, 255, 0.34) 5px
+  );
+  box-shadow: 0 11px 24px rgba(46, 16, 69, 0.16);
+}
+
+.open-book-shell-mobile::before {
+  display: none;
+}
+
+.book-page {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.78), rgba(247, 239, 224, 0.92)),
+    #fbf4e7;
+  color: var(--color-charcoal);
+  box-shadow:
+    inset 0 0 0 1px rgba(118, 82, 52, 0.13),
+    inset 0 0 26px rgba(102, 66, 39, 0.07);
+}
+
+.book-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(rgba(128, 91, 58, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(128, 91, 58, 0.025) 1px, transparent 1px);
+  background-size: 100% 24px, 28px 100%;
+  mix-blend-mode: multiply;
+}
+
+.book-page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.book-page-left {
+  border-radius: 4px 1px 1px 4px;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(90deg, #fcf6ec 0%, #fbf1e3 76%, #eadcc8 100%);
+}
+
+.book-page-left::after {
+  right: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(65, 39, 25, 0.18));
+}
+
+.book-page-right {
+  border-radius: 1px 4px 4px 1px;
+  background:
+    radial-gradient(circle at 80% 12%, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(90deg, #eadcc8 0%, #fbf1e3 24%, #fcf6ec 100%);
+}
+
+.book-page-right::after {
+  left: 0;
+  background: linear-gradient(90deg, rgba(65, 39, 25, 0.18), rgba(255, 255, 255, 0));
+}
+
+.book-page-mobile {
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(90deg, #fbf1e3, #fcf6ec 18%, #fcf6ec 82%, #fbf1e3);
+}
+
+.book-page-mobile::after {
+  right: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(65, 39, 25, 0.10));
+}
+
+.book-page-accent {
+  position: relative;
+  z-index: 4;
+  height: 4px;
+  background: linear-gradient(to right, var(--book-accent), color-mix(in srgb, var(--book-accent) 34%, transparent));
+}
+
+.book-page-content {
+  position: absolute;
+  z-index: 5;
+  top: 4px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  padding: 1.5rem 2rem 3rem;
+}
+
+@media (max-width: 699px) {
+  .open-book-shell {
+    border-radius: 7px;
+  }
+
+  .open-book-shell::after {
+    inset: 8px -6px -8px 6px;
+  }
+}

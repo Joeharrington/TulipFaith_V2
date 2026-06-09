@@ -25,19 +25,18 @@ const SECTIONS = [
 ];
 
 // No scrolling — overflow is clipped, content flows to the next page
-const BookPage = forwardRef(({ children, accent }, ref) => (
-  <div ref={ref} style={{ background: "white", position: "relative", overflow: "hidden" }}>
-    <div style={{ height: 4, background: `linear-gradient(to right, ${accent}, ${accent}55)` }} />
-    <div style={{
-      position: "absolute",
-      top: 4, left: 0, right: 0, bottom: 0,
-      overflow: "hidden",
-      padding: "1.5rem 2rem 3rem",
-    }}>
+const BookPage = forwardRef(({ children, accent, pageIndex, isMobile }, ref) => {
+  const sideClass = isMobile ? "book-page-mobile" : pageIndex % 2 === 0 ? "book-page-left" : "book-page-right";
+
+  return (
+  <div ref={ref} className={`book-page ${sideClass}`} style={{ "--book-accent": accent }}>
+    <div className="book-page-accent" />
+    <div className="book-page-content">
       {children}
     </div>
   </div>
-));
+  );
+});
 BookPage.displayName = "BookPage";
 
 // Two-pass paginator: first page can use a different max height than continuation pages
@@ -645,7 +644,7 @@ export default function ChapterReader({ track, slug }) {
               style={{ borderColor: accent, borderTopColor: "transparent" }} />
           </div>
         ) : (
-          <div style={{ boxShadow: "0 16px 56px rgba(46,16,69,0.22), 0 2px 8px rgba(46,16,69,0.10)", borderRadius: "3px 6px 6px 3px" }}>
+          <div className={`open-book-shell ${isMobile ? "open-book-shell-mobile" : ""}`}>
             <FlipBook
               ref={bookRef}
               width={pageSize.width}
@@ -657,7 +656,8 @@ export default function ChapterReader({ track, slug }) {
               maxHeight={pageSize.height}
               showCover={false}
               drawShadow={true}
-              flippingTime={700}
+              maxShadowOpacity={0.55}
+              flippingTime={1050}
               usePortrait={isMobile}
               startPage={0}
               startZIndex={10}
@@ -670,7 +670,7 @@ export default function ChapterReader({ track, slug }) {
               onFlip={onFlip}
             >
               {pageDescriptors.map((page, i) => (
-                <BookPage key={i} accent={accent}>
+                <BookPage key={i} accent={accent} pageIndex={i} isMobile={isMobile}>
                   {renderPageContent(page, accent, story.chapters, chapterPageStarts, bookRef)}
                 </BookPage>
               ))}
@@ -682,13 +682,13 @@ export default function ChapterReader({ track, slug }) {
         {bookReady && (
           <div className="flex items-center justify-center gap-6 mt-6">
             <button
-              onClick={() => bookRef.current?.pageFlip()?.flipPrev("top")}
+              onClick={() => bookRef.current?.pageFlip()?.flipPrev("bottom")}
               className="px-5 py-2 rounded-xl text-sm transition-all"
               style={{ background: "white", border: `1px solid ${accent}44`, color: accent }}>
               ← Previous
             </button>
             <button
-              onClick={() => bookRef.current?.pageFlip()?.flipNext("top")}
+              onClick={() => bookRef.current?.pageFlip()?.flipNext("bottom")}
               className="px-5 py-2 rounded-xl text-sm transition-all"
               style={{ background: accent, border: `1px solid ${accent}`, color: "white" }}>
               Next →
