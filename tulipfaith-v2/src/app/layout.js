@@ -31,12 +31,20 @@ export const metadata = {
     statusBarStyle: "black-translucent",
     title: "TulipFaith",
   },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${playfair.variable} ${lora.variable} h-full antialiased`}
     >
       <head>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -43,9 +44,13 @@ export default function Header() {
           className="flex items-center shrink-0 overflow-hidden"
           style={{ height: '85px' }}
         >
-          <img
+          <Image
             src="/images/Tulip_Faith_Logo.png"
             alt="Tulip Faith"
+            width={1254}
+            height={1254}
+            priority
+            sizes="140px"
             style={{
               height:       '140px',
               width:        'auto',

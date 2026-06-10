@@ -13,6 +13,7 @@ const COMING_SOON = [
     title:       "The Shepherd Who Searched",
     description: "A little lamb wanders far from the flock — and discovers just how far the Shepherd will go.",
     tag:         "God's Love",
+    available:   true,
   },
   {
     slug:        "the-seed-that-waited",
@@ -101,7 +102,7 @@ export default function ChildrenStoriesPage() {
                     className="text-xs uppercase tracking-widest font-medium transition-opacity hover:opacity-70"
                     style={{ color: "var(--color-fall-amber)", letterSpacing: "0.15em" }}
                   >
-                    Coming Soon
+                    {story.available ? "Read Story" : "Coming Soon"}
                   </Link>
                 </div>
               ))}
@@ -112,7 +113,7 @@ export default function ChildrenStoriesPage() {
                 className="text-lg italic mb-6"
                 style={{ fontFamily: "var(--font-display)", color: "var(--color-violet-primary)" }}
               >
-                These stories are being written with little ones in mind. Coming soon.
+                More stories are being written with little ones in mind. Come back soon.
               </p>
               <Link href="/our-story" className="btn-secondary">Read Our Story</Link>
             </div>

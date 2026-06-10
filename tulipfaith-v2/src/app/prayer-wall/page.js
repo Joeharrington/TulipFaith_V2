@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -166,9 +167,12 @@ export default function PrayerWallPage() {
 
         {/* ── Golgotha image ─────────────────────────────────────── */}
         <section style={{ position: "relative", overflow: "hidden", height: "58vh", minHeight: "360px", background: "#06010f" }}>
-          <img
+          <Image
             src="/images/golgotha-scene.png"
             alt="The crucifixion at Golgotha"
+            fill
+            priority
+            sizes="100vw"
             style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center center", filter: "brightness(0.30) saturate(0.5)" }}
           />
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", background: "linear-gradient(to bottom, transparent, #06010f)" }} />

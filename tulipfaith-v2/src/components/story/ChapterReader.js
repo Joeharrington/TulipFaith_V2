@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import HighlightToJournal from "@/components/story/HighlightToJournal";
+import { getLocalChapter, getLocalStory } from "@/lib/localStories";
 
 const FlipBook = dynamic(() => import("react-pageflip"), { ssr: false });
 
@@ -458,7 +458,6 @@ function buildPageDescriptors(story, chapters, pageSize) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function ChapterReader({ track, slug }) {
-  const router  = useRouter();
   const bookRef = useRef(null);
 
   const [story,              setStory]              = useState(null);
@@ -499,8 +498,8 @@ export default function ChapterReader({ track, slug }) {
   useEffect(() => {
     fetch(`${API}/api/stories/${track}/${slug}`)
       .then((r) => r.ok ? r.json() : null)
-      .then((data) => { setStory(data); setLoadingStory(false); })
-      .catch(() => { setStory(null); setLoadingStory(false); });
+      .then((data) => { setStory(data || getLocalStory(track, slug)); setLoadingStory(false); })
+      .catch(() => { setStory(getLocalStory(track, slug)); setLoadingStory(false); });
   }, [track, slug]);
 
   // Load all unlocked chapters when story is ready
@@ -510,7 +509,10 @@ export default function ChapterReader({ track, slug }) {
     if (!unlocked.length) return;
     queueMicrotask(() => setLoadingCh(true));
     Promise.all(unlocked.map((c) =>
-      fetch(`${API}/api/chapters/${c.id}`).then((r) => r.ok ? r.json() : null)
+      fetch(`${API}/api/chapters/${c.id}`)
+        .then((r) => r.ok ? r.json() : null)
+        .catch(() => null)
+        .then((data) => data || getLocalChapter(c.id))
     ))
       .then((results) => {
         setChapters(results.filter(Boolean));
@@ -530,7 +532,7 @@ export default function ChapterReader({ track, slug }) {
       setChapterPageStarts(cps);
       setChapterSecStarts(css);
     });
-  }, [story, chapters, pageSize.width, pageSize.height]);
+  }, [story, chapters, pageSize]);
 
   function onFlip(e) {
     const p = e.data;
@@ -542,7 +544,7 @@ export default function ChapterReader({ track, slug }) {
       const chStart = chapterPageStarts[chId];
       const nextChStart = Math.min(...Object.values(chapterPageStarts).filter(v => v > chStart).concat([Infinity]));
       if (p >= chStart && p < nextChStart) {
-        foundChId = parseInt(chId);
+        foundChId = chId;
         const secEntries = Object.entries(secStarts).sort((a, b) => b[1] - a[1]);
         for (const [key, start] of secEntries) {
           if (p >= start) { foundSec = key; break; }

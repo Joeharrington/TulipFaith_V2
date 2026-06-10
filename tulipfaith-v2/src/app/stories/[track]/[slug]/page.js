@@ -1,16 +1,17 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChapterReader from "@/components/story/ChapterReader";
+import { getLocalStory } from "@/lib/localStories";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 async function fetchStory(track, slug) {
   try {
     const res = await fetch(`${API}/api/stories/${track}/${slug}`, { next: { revalidate: 60 } });
-    if (!res.ok) return null;
-    return res.json();
+    if (!res.ok) return getLocalStory(track, slug);
+    return await res.json();
   } catch {
-    return null;
+    return getLocalStory(track, slug);
   }
 }
 
